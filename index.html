@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,8 @@
         }
 
         .input-group {
-            flex-basis: calc(20% - 10px); /* 每行5个 */
+            flex-basis: calc(20% - 10px);
+            /* 每行5个 */
             margin: 5px;
             text-align: center;
         }
@@ -85,6 +87,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <button class="custom-button" @click="translateAll('baidu')" style="margin-left: 50px;">一键翻译（百度翻译）</button>
@@ -163,15 +166,15 @@
                 },
 
                 async translateAll(service) {
-                    let delay = 800; // 初始延迟时间
+                    let delay = 800; // 初始延迟时间，仅在使用有道翻译时有用
 
                     for (let i = 0; i < this.inputGroups.length; i++) {
                         const groupId = this.inputGroups[i].id;
                         const startTime = performance.now();
                         console.log(`开始处理请求 ${groupId}`);
-                        
+
                         await this.translateText(groupId, service);
-                        
+
                         const endTime = performance.now();
                         const responseTime = endTime - startTime;
 
@@ -180,9 +183,9 @@
                             delay = Math.max(800, responseTime + 200);
                             console.log(`请求 ${groupId} 响应时间为 ${responseTime} 毫秒，设置延迟为 ${delay} 毫秒`);
                         }
-                        
-                        // 确保每次请求后都有一定的延迟
-                        if (i < this.inputGroups.length - 1) {
+
+                        if (service === 'youdao' && i < this.inputGroups.length - 1) {
+                            // 确保每次请求后都有一定的延迟，只有在使用有道翻译时才进行延迟
                             await new Promise(resolve => setTimeout(resolve, delay));
                         }
                     }
@@ -204,4 +207,5 @@
         });
     </script>
 </body>
+
 </html>
